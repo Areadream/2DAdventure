@@ -74,6 +74,11 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        
+    }
+
     public void Move()
     {
         //»ÀŒÔ“∆∂Ø
