@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//PlayerºÍAnimatorµÄÇÅÁº
 public class PlayerAnimation : MonoBehaviour
 {
     Animator anim;
@@ -20,11 +21,22 @@ public class PlayerAnimation : MonoBehaviour
         setAnimation();
     }
 
+    public void PlayHurt()
+    {
+        anim.SetTrigger("hurt");
+    }
+    public void PlayAttack()
+    {
+        anim.SetTrigger("attack");
+    }
+
     private void setAnimation()
     {
         anim.SetFloat("velocityX", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("velocityY", rb.velocity.y);
         anim.SetBool("isGround", physicsCheck.isGround);
         anim.SetBool("isCrouch", playerController.isCrouch);
+        anim.SetBool("isDead", playerController.isDead);
+        anim.SetBool("isAttack", playerController.isAttack);
     }
 }
