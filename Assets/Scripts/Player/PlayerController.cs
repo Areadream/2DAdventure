@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
         int faceDir = (int)transform.localScale.x;
         if (inputDirection.x > 0)
             faceDir = 1;
-        if (inputDirection.x < 0)
+        if (inputDirection.x < 0) 
             faceDir = -1;
 
         
@@ -144,8 +144,11 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAttack(InputAction.CallbackContext obj)
     {
-        isAttack = true;
-        playAnimation.PlayAttack();
+        if (physicsCheck.isGround)
+        {
+            isAttack = true;
+            playAnimation.PlayAttack();
+        }
     }
 
     public void GetHurt(Transform attacker)

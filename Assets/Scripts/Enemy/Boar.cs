@@ -8,7 +8,7 @@ public class Boar : Enemy
     {
         base.Move();
         //anim.SetBool("walk", true);
-        anim.SetBool("run", true);
+        anim.SetBool("walk", true);
     }
 
 }

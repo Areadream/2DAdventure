@@ -39,7 +39,7 @@ public class Character : MonoBehaviour
     }
 
     public void TakeDamage(Attack attacker)
-    {
+    { 
         if (invulnerable)
             return;
         if(currentHealth - attacker.damage > 0)
@@ -48,7 +48,6 @@ public class Character : MonoBehaviour
             TriggerInvulnerable();
             //执行受伤
             OnTakeDamage?.Invoke(attacker.transform);
-            Debug.Log("啊！我受伤了。");
 
         }
         else
