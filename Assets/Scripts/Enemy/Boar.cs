@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class Boar : Enemy
 {
-    public override void Move()
+    //public override void Move()
+    //{
+    //    base.Move();
+    //    //anim.SetBool("walk", true);
+    //    anim.SetBool("walk", true);
+    //}
+
+    protected override void Awake()
     {
-        base.Move();
-        //anim.SetBool("walk", true);
-        anim.SetBool("walk", true);
+        base.Awake();
+        patrolState = new BoarPatrolState();
     }
+
 
 }
