@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D),typeof(Animator),typeof(PhysicsCheck))]
 public class Enemy : MonoBehaviour
 {
     [Header("×é¼þ")]
@@ -33,6 +34,7 @@ public class Enemy : MonoBehaviour
 
     protected BaseState patrolState;
     protected BaseState chaseState;
+    protected BaseState skillState;
     private BaseState currentState;
 
     [Header("¼ì²â")]
@@ -91,7 +93,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Move()
     {
-        
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("PreMove") && !anim.GetCurrentAnimatorStateInfo(0).IsName("snailRecover"))
         rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime,rb.velocity.y);
     }
 
@@ -176,6 +178,7 @@ public class Enemy : MonoBehaviour
         {
             NPCState.Patrol => patrolState,
             NPCState.Chase => chaseState,
+            NPCState.Skill => skillState,
             _ => null
         };
         currentState.OnExit();
