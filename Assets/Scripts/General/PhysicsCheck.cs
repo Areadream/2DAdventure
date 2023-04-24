@@ -22,6 +22,7 @@ public class PhysicsCheck : MonoBehaviour
 
     private void Awake()
     {
+
         coll = GetComponent<CapsuleCollider2D>();
         if(!manual )
         {
@@ -45,7 +46,6 @@ public class PhysicsCheck : MonoBehaviour
         isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2( bottomOffset.x * transform.localScale.x, bottomOffset.y),checkRadius,groundLayer);
         touchLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, checkRadius, groundLayer);
         touchRightWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, checkRadius, groundLayer);
-
     }
 
     private void OnDrawGizmosSelected()
