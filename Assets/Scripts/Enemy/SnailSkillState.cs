@@ -12,18 +12,18 @@ public class SnailSkillState : BaseState
         currentEnemy.anim.SetBool("hide", true);
         currentEnemy.anim.SetTrigger("skill");
 
-        currentEnemy.loseTimeCount = currentEnemy.loseTime;
+        currentEnemy.loseTimeCounter = currentEnemy.loseTime;
 
         currentEnemy.GetComponent<Character>().invulnerable = true;
     }
 
     public override void LogicUpdate()
     {
-        if (currentEnemy.loseTimeCount <= 0)
+        if (currentEnemy.loseTimeCounter <= 0)
         {
             currentEnemy.SwitchState(NPCState.Patrol);
         }
-        currentEnemy.GetComponent<Character>().invulnerableCount = currentEnemy.loseTimeCount;
+        currentEnemy.GetComponent<Character>().invulnerableCount = currentEnemy.loseTimeCounter;
     }
 
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header("组件")]
-    public Rigidbody2D rb;
+    [HideInInspector]public Rigidbody2D rb;
     [HideInInspector] public Animator anim;
     [HideInInspector] public PhysicsCheck physicsCheck;
 
@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public Vector3 faceDir;
     public Transform attacker;
     public float hurtForce;
+    public Vector3 spawnPoint;
 
 
 
@@ -26,7 +27,7 @@ public class Enemy : MonoBehaviour
     public float waitTime;
     public float waitTimeCount;
     public float loseTime;
-    public float loseTimeCount;
+    public float loseTimeCounter;
 
     [Header("状态")]
     public bool isHurt;
@@ -52,10 +53,11 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
         currentSpeed = normalSpeed;
-        //currentSpeed = chaseSpeed;
+        spawnPoint = transform.position;
+
 
         waitTimeCount = waitTime;
-        loseTimeCount = loseTime;
+        loseTimeCounter = loseTime;
     }
 
     private void OnEnable()
@@ -94,7 +96,7 @@ public class Enemy : MonoBehaviour
     public virtual void Move()
     {
         if(!anim.GetCurrentAnimatorStateInfo(0).IsName("PreMove") && !anim.GetCurrentAnimatorStateInfo(0).IsName("snailRecover"))
-        rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime,rb.velocity.y);
+            rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime,rb.velocity.y);
     }
 
     public void TimeCounter()
@@ -112,12 +114,12 @@ public class Enemy : MonoBehaviour
         //我认为的改良
         if (!FoundPlayer())
         {
-            if(loseTimeCount > 0)
-                loseTimeCount -= Time.deltaTime;
+            if(loseTimeCounter > 0)
+                loseTimeCounter -= Time.deltaTime;
         }
         else
         {
-            loseTimeCount = loseTime;
+            loseTimeCounter = loseTime;
         }
 
     }
@@ -163,12 +165,12 @@ public class Enemy : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public bool FoundPlayer()
+    public virtual bool FoundPlayer()
     {
         return Physics2D.BoxCast(transform.position+(Vector3)centerOffset,checkSize,0,faceDir,checkDistance,attackLayer);
     }
 
-    private void OnDrawGizmosSelected()
+    public virtual void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position + (Vector3)centerOffset + new Vector3(checkDistance * -transform.localScale.x, 0), 0.2f);
     }
@@ -188,4 +190,9 @@ public class Enemy : MonoBehaviour
     }
 
     #endregion
+
+    public virtual Vector3 GetNewPoint()
+    {
+        return transform.position;
+    }
 }

@@ -20,7 +20,7 @@ public class HurtAnimation : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.GetComponent<PlayerController>().isHurt = false;
-        animator.GetComponent<Character>().invulnerable = false;
+        //animator.GetComponent<Character>().invulnerable = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

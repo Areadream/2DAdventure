@@ -14,7 +14,7 @@ public class BoarChaseState : BaseState
 
     public override void LogicUpdate()
     {
-        if(currentEnemy.loseTimeCount<=0)
+        if(currentEnemy.loseTimeCounter<=0)
         {
             currentEnemy.SwitchState(NPCState.Patrol);
         }
@@ -30,7 +30,7 @@ public class BoarChaseState : BaseState
     }
     public override void OnExit()
     {
-        currentEnemy.loseTimeCount = currentEnemy.loseTime;
+        currentEnemy.loseTimeCounter = currentEnemy.loseTime;
         currentEnemy.anim.SetBool("run", false);
     }
 }
