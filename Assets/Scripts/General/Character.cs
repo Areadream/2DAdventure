@@ -7,14 +7,14 @@ using UnityEngine.Events;
 
 public class Character : MonoBehaviour
 {
-    [Header("»ù±¾ÊôĞÔ")]
+    [Header("åŸºæœ¬å±æ€§")]
     public float maxHealth;
     public float currentHealth;
 
-    [Header("ÊÜÉËÎŞµĞ")]
+    [Header("å—ä¼¤æ— æ•Œ")]
     public float invulnerableDuration;
     public float invulnerableCount;
-    public bool invulnerable;//ÊÇ·ñ´¦ÓÚÎŞµĞ×´Ì¬
+    public bool invulnerable;//æ˜¯å¦å¤„äºæ— æ•ŒçŠ¶æ€
 
     public UnityEvent<Character> OnHealthChange;
     public UnityEvent<Transform> OnTakeDamage;
@@ -49,14 +49,14 @@ public class Character : MonoBehaviour
         {
             currentHealth -= attacker.damage;
             TriggerInvulnerable();
-            //Ö´ĞĞÊÜÉË
+            //æ‰§è¡Œå—ä¼¤
             OnTakeDamage?.Invoke(attacker.transform);
 
         }
         else
         {
             currentHealth = 0;
-            //´¥·¢ËÀÍö
+            //è§¦å‘æ­»äº¡
             OnDie.Invoke();
         }
         OnHealthChange?.Invoke(this);

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BeePatrolState : BaseState
 {
     public Vector3 target;
-    public Vector3 moveDir;//朝向Player
+    public Vector3 moveDir;//鏈濆悜Player
 
     public override void OnEnter(Enemy enemy)
     {
@@ -22,7 +22,7 @@ public class BeePatrolState : BaseState
             currentEnemy.SwitchState(NPCState.Chase);
         }
 
-        //到了巡逻点等待
+        //鍒颁簡宸￠�荤偣绛夊緟
         if(Mathf.Abs(target.x - currentEnemy.transform.position.x)<0.1f &&
             Mathf.Abs(target.y - currentEnemy.transform.position.y) < 0.1f)
         {
@@ -30,7 +30,7 @@ public class BeePatrolState : BaseState
             target = currentEnemy.GetNewPoint();
         }
 
-        //转向
+        //杞悜
         moveDir = (target - currentEnemy.transform.position).normalized;
         if(moveDir.x > 0)
             currentEnemy.transform.localScale = new Vector3(-1, 1, 1);

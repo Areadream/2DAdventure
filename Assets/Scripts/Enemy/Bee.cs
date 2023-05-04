@@ -29,7 +29,7 @@ public class Bee : Enemy
         Gizmos.DrawWireSphere(transform.position, checkDistance);
         Gizmos.color = Color.green;
         //Gizmos.DrawWireSphere(transform.position, patrolRadius);
-        //Ѳ�߷�Χ
+        //巡逻范围
         Gizmos.DrawWireCube(spawnPoint, new Vector3(patrolRadius*2, patrolRadius*2));
     }
 

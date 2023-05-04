@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("ÊÂ¼ş¼àÌı")]
+    [Header("äº‹ä»¶ç›‘å¬")]
     public CharacterEventSO healthEvent;
     public PlayerStatBar playerStatBar;
 

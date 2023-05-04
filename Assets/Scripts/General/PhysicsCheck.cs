@@ -5,9 +5,9 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class PhysicsCheck : MonoBehaviour
 {
-    [Header("×é¼ş")]
+    [Header("ç»„ä»¶")]
     public CapsuleCollider2D coll;
-    [Header("¼ì²â²ÎÊı")]
+    [Header("æ£€æµ‹å‚æ•°")]
     public bool manual;
     public Vector2 bottomOffset;
     public Vector2 leftOffset;
@@ -15,7 +15,7 @@ public class PhysicsCheck : MonoBehaviour
     public float checkRadius;
     public LayerMask groundLayer;
 
-    [Header("×´Ì¬")]
+    [Header("çŠ¶æ€")]
     public bool isGround;
     public bool touchLeftWall;
     public bool touchRightWall;
@@ -42,7 +42,7 @@ public class PhysicsCheck : MonoBehaviour
 
     public void check()
     {
-        //¼ì²âµØÃæ
+        //æ£€æµ‹åœ°é¢
         isGround = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2( bottomOffset.x * transform.localScale.x, bottomOffset.y),checkRadius,groundLayer);
         touchLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, checkRadius, groundLayer);
         touchRightWall = Physics2D.OverlapCircle((Vector2)transform.position + rightOffset, checkRadius, groundLayer);

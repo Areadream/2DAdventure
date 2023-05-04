@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("×é¼þ")]
+    [Header("ç»„ä»¶")]
     public PlayerInputControl inputControl;
     public Vector2 inputDirection;
     public PhysicsCheck physicsCheck;
@@ -15,20 +15,20 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public PlayerAnimation playAnimation;
 
-    [Header("»ù±¾²ÎÊý")]
+    [Header("åŸºæœ¬å‚æ•°")]
     public float speed;
     private float walkSpeed => speed / 2f;
     private float runSpeed;
-    public float jumpForce; //ÌøÔ¾Á¦£¬ÌøÔ¾Ë²¼äÊ©¼ÓµÄÁ¦
+    public float jumpForce; //è·³è·ƒåŠ›ï¼Œè·³è·ƒçž¬é—´æ–½åŠ çš„åŠ›
     public float hurtForce;
     private Vector2 originalOffset;
     private Vector2 originalSize;
-    [Header("×´Ì¬")]
+    [Header("çŠ¶æ€")]
     public bool isCrouch;
     public bool isHurt;
     public bool isDead;
     public bool isAttack;
-    [Header("ÎïÀí²ÄÖÊ")]
+    [Header("ç‰©ç†æè´¨")]
     public PhysicsMaterial2D wall;
     public PhysicsMaterial2D normal;
 
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
         inputControl.Gameplay.Jump.started += Jump;
 
-        #region Ç¿ÖÆ×ßÂ·
+        #region å¼ºåˆ¶èµ°è·¯
         runSpeed = speed;
         inputControl.Gameplay.MoveButton.performed +=  ctx =>
         {
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
                 speed = runSpeed;
         };
         #endregion
-        //¹¥»÷
+        //æ”»å‡»
         inputControl.Gameplay.Attack.started += PlayerAttack;
     }
 
@@ -97,12 +97,12 @@ public class PlayerController : MonoBehaviour
 
     public void Move()
     {
-        //ÈËÎïÒÆ¶¯
+        //äººç‰©ç§»åŠ¨
         if(!isCrouch)
             rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
 
-        //ÈËÎï·­×ª
-        //·½·¨1 ¸Ä±ätransform.scale   
+        //äººç‰©ç¿»è½¬
+        //æ–¹æ³•1 æ”¹å˜transform.scale   
         int faceDir = (int)transform.localScale.x;
         if (inputDirection.x > 0)
             faceDir = 1;
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
         
         transform.localScale = new Vector3(faceDir, 1, 1);
 
-        //·½·¨2 ¸Ä±äSpriteRenderer.flipX
+        //æ–¹æ³•2 æ”¹å˜SpriteRenderer.flipX
         //bool flip = spriteRenderer.flipX;
         //if (inputDirection.x > 0)
         //    flip = false;
@@ -120,17 +120,17 @@ public class PlayerController : MonoBehaviour
         //    flip = true;
         //spriteRenderer.flipX = flip;
 
-        //¶×ÏÂ
+        //è¹²ä¸‹
         isCrouch = inputDirection.y < -0.5f && physicsCheck.isGround;
         if (isCrouch)
         {
-            //ÐÞ¸ÄÅö×²Ìå»ý
+            //ä¿®æ”¹ç¢°æ’žä½“ç§¯
             coll.offset = new Vector2(-0.05f, 0.85f);
             coll.size = new Vector2(0.7f, 1.7f);
         }
         else
         {
-            //»¹Ô­Åö×²Ìå»ý
+            //è¿˜åŽŸç¢°æ’žä½“ç§¯
             coll.offset = originalOffset;
             coll.size = originalSize;
         }

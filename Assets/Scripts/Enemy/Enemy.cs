@@ -5,13 +5,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D),typeof(Animator),typeof(PhysicsCheck))]
 public class Enemy : MonoBehaviour
 {
-    [Header("×é¼ş")]
+    [Header("ç»„ä»¶")]
     [HideInInspector]public Rigidbody2D rb;
     [HideInInspector] public Animator anim;
     [HideInInspector] public PhysicsCheck physicsCheck;
 
 
-    [Header("»ù±¾²ÎÊı")]
+    [Header("åŸºæœ¬å‚æ•°")]
     public float normalSpeed;
     public float chaseSpeed;
     public float currentSpeed;
@@ -22,14 +22,14 @@ public class Enemy : MonoBehaviour
 
 
 
-    [Header("¼ÆÊ±Æ÷")]
+    [Header("è®¡æ—¶å™¨")]
     public bool wait;
     public float waitTime;
     public float waitTimeCount;
     public float loseTime;
     public float loseTimeCounter;
 
-    [Header("×´Ì¬")]
+    [Header("çŠ¶æ€")]
     public bool isHurt;
     public bool isDead;
 
@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
     protected BaseState skillState;
     private BaseState currentState;
 
-    [Header("¼ì²â")]
+    [Header("æ£€æµ‹")]
     public Vector2 centerOffset;
     public Vector2 checkSize;
     public float checkDistance;
@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
                 transform.localScale = new Vector3(faceDir.x, 1, 1);
             }
         }
-        //ÎÒÈÏÎªµÄ¸ÄÁ¼
+        //æˆ‘è®¤ä¸ºçš„æ”¹è‰¯
         if (!FoundPlayer())
         {
             if(loseTimeCounter > 0)
@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-    #region ÊÂ¼şÖ´ĞĞ·½·¨
+    #region äº‹ä»¶æ‰§è¡Œæ–¹æ³•
     public void OnTakeDamage(Transform attackTrans)
     {
         attacker = attackTrans;
@@ -135,7 +135,7 @@ public class Enemy : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
 
         isHurt = true;
-        //ÎÒµÄ²¹¶¡
+        //æˆ‘çš„è¡¥ä¸
         wait = false;
         waitTimeCount = waitTime;
         //

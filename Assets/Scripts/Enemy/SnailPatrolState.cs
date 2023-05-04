@@ -20,7 +20,7 @@ public class SnailPatrolState : BaseState
         {
 
             currentEnemy.wait = true;
-            //×Ô¼ºÌí¼ÓµÄ£¬ÒòÎªËÙ¶ÈÌ«¿ì»áÍ£²»ÏÂÀ´ -> currentEnemy.rb.velocity = Vector3.zero;
+            //è‡ªå·±æ·»åŠ çš„ï¼Œå› ä¸ºé€Ÿåº¦å¤ªå¿«ä¼šåœä¸ä¸‹æ¥ -> currentEnemy.rb.velocity = Vector3.zero;
             currentEnemy.rb.velocity = Vector3.zero;
 
             currentEnemy.anim.SetBool("walk", false);

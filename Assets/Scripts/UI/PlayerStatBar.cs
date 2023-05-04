@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class PlayerStatBar : MonoBehaviour
 {
     public Image healthImage;
-    public Image healthDelayImage;//ºìÉ«ÑªÌõ
+    public Image healthDelayImage;//çº¢è‰²è¡€æ¡
     public Image powerImage;
 
     /// <summary>
-    /// ½ÓÊÕHealthµÄ±ä¸ü°Ù·Ö±È
+    /// æ¥æ”¶Healthçš„å˜æ›´ç™¾åˆ†æ¯”
     /// </summary>
-    /// <param name="percentage">°Ù·Ö±È£ºCurrent/Max</param>
+    /// <param name="percentage">ç™¾åˆ†æ¯”ï¼šCurrent/Max</param>
     /// 
     private void Update()
     {
@@ -20,7 +20,7 @@ public class PlayerStatBar : MonoBehaviour
         {
             healthDelayImage.fillAmount -= Time.deltaTime;
             //healthDelayImage.fillAmount -= Time.deltaTime * speed;
-            //¿ÉÒÔÍ¨¹ıspeedµ÷ÕûËÙ¶È 
+            //å¯ä»¥é€šè¿‡speedè°ƒæ•´é€Ÿåº¦ 
         }
     }
     public void OnHealthChange(float percentage)

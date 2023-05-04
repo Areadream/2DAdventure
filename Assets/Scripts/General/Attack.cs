@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [Header("»ù±¾ÊôĞÔ")]
+    [Header("åŸºæœ¬å±æ€§")]
     public int damage;
     public float attackRange;
     public float attackRate;
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        //?¼´ÏÈÑ¯ÎÊÓĞÃ»ÓĞÕâ¸ö×é¼ş£¬Ã»ÓĞÔò²»Ö´ĞĞ
+        //?å³å…ˆè¯¢é—®æœ‰æ²¡æœ‰è¿™ä¸ªç»„ä»¶ï¼Œæ²¡æœ‰åˆ™ä¸æ‰§è¡Œ
         other.GetComponent<Character>()?.TakeDamage(this);
     }
 }

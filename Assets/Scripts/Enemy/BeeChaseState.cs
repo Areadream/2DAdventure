@@ -23,10 +23,10 @@ public class BeeChaseState : BaseState
         if (currentEnemy.loseTimeCounter <= 0)
             currentEnemy.SwitchState(NPCState.Patrol);
         target = new Vector3(currentEnemy.attacker.position.x, currentEnemy.attacker.position.y + 1.5f, 0);
-        //ÅÐ¶Ï¹¥»÷¾àÀë
+        //åˆ¤æ–­æ”»å‡»è·ç¦»
         if (Mathf.Abs(target.x - currentEnemy.transform.position.x) <= attack.attackRange && Mathf.Abs(target.y - currentEnemy.transform.position.y) <= attack.attackRange)
         {
-            //¹¥»÷
+            //æ”»å‡»
             isAttack = true;
             if (!currentEnemy.isHurt)
                 currentEnemy.rb.velocity = Vector2.zero;
@@ -41,7 +41,7 @@ public class BeeChaseState : BaseState
         {
             isAttack = false;
         }
-        //×ªÏò
+        //è½¬å‘
         moveDir = (target - currentEnemy.transform.position).normalized;
         if (moveDir.x > 0)
             currentEnemy.transform.localScale = new Vector3(-1, 1, 1);
