@@ -16,13 +16,16 @@ public class Character : MonoBehaviour
     public float invulnerableCount;
     public bool invulnerable;//是否处于无敌状态
 
+    public UnityEvent<Character> OnHealthChange;
     public UnityEvent<Transform> OnTakeDamage;
-    public UnityEvent OnDie;
+    public UnityEvent OnDie; 
+
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        OnHealthChange?.Invoke(this);
     }
 
     // Update is called once per frame
@@ -56,6 +59,7 @@ public class Character : MonoBehaviour
             //触发死亡
             OnDie.Invoke();
         }
+        OnHealthChange?.Invoke(this);
     }
 
     private void TriggerInvulnerable()
