@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
 
     public UnityEvent<Character> OnHealthChange;
     public UnityEvent<Transform> OnTakeDamage;
-    public UnityEvent OnDie; 
+    public UnityEvent OnDie;
 
 
     // Start is called before the first frame update
@@ -38,14 +38,26 @@ public class Character : MonoBehaviour
         if (invulnerable)
         {
             invulnerableCount -= Time.deltaTime;
-            if(invulnerableCount <= 0)
+            if (invulnerableCount <= 0)
             {
                 invulnerable = false;
             }
         }
-        if(currentPower < maxPower)
+        if (currentPower < maxPower)
         {
             currentPower += powerRecoverSpeed * Time.deltaTime;
+        }
+
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            //死亡、更新血量
+            currentHealth = 0;
+            OnHealthChange?.Invoke(this);
+            OnDie?.Invoke();
         }
 
     }
@@ -58,10 +70,10 @@ public class Character : MonoBehaviour
 
 
     public void TakeDamage(Attack attacker)
-    { 
+    {
         if (invulnerable)
             return;
-        if(currentHealth - attacker.damage > 0)
+        if (currentHealth - attacker.damage > 0)
         {
             currentHealth -= attacker.damage;
             TriggerInvulnerable();
