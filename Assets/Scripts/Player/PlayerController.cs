@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,13 +15,20 @@ public class PlayerController : MonoBehaviour
     public CapsuleCollider2D coll;
     private Rigidbody2D rb;
     public PlayerAnimation playAnimation;
+    private Character character;
+
 
     [Header("基本参数")]
     public float speed;
     private float walkSpeed => speed / 2f;
     private float runSpeed;
     public float jumpForce; //跳跃力，跳跃瞬间施加的力
+    public float wallJumpForce;
     public float hurtForce;
+    public int slidePowerCost;
+
+    public float slideDistance;
+    public float slideSpeed;
     private Vector2 originalOffset;
     private Vector2 originalSize;
     [Header("状态")]
@@ -28,6 +36,9 @@ public class PlayerController : MonoBehaviour
     public bool isHurt;
     public bool isDead;
     public bool isAttack;
+    public bool isMyCode;
+    public bool wallJump;
+    public bool isSlide;
     [Header("物理材质")]
     public PhysicsMaterial2D wall;
     public PhysicsMaterial2D normal;
@@ -41,6 +52,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         coll = GetComponent<CapsuleCollider2D>();
         playAnimation = GetComponent<PlayerAnimation>();
+        character = GetComponent<Character>();
 
         originalOffset = coll.offset; 
         originalSize = coll.size;
@@ -62,6 +74,8 @@ public class PlayerController : MonoBehaviour
         #endregion
         //攻击
         inputControl.Gameplay.Attack.started += PlayerAttack;
+        //滑铲
+        inputControl.Gameplay.Slide.started += Slide;
     }
 
 
@@ -98,7 +112,9 @@ public class PlayerController : MonoBehaviour
     public void Move()
     {
         //人物移动
-        if(!isCrouch)
+        if(isSlide)
+            return;
+        if (!isCrouch && !wallJump )
             rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
 
         //人物翻转
@@ -138,9 +154,63 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        if(physicsCheck.isGround)
+        int faceDir = (int)transform.localScale.x;
+        if (physicsCheck.isGround)
+        {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            isSlide=false;
+            StopAllCoroutines();
+        }
+        else if (physicsCheck.onWall)
+        //else if (physicsCheck.touchLeftWall || physicsCheck.touchRightWall)
+        {
+            rb.AddForce(new Vector2(-inputDirection.x, 2f) * wallJumpForce, ForceMode2D.Impulse);
+            wallJump = true;
+        }
+
     }
+
+    private void Slide(InputAction.CallbackContext context)
+    {
+        if(!isSlide && physicsCheck.isGround && character.currentPower >= slidePowerCost)
+        {
+            isSlide = true;
+            
+            
+            var targetPos = new Vector3(transform.position.x + slideDistance * transform.localScale.x, transform.position.y);
+            
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+            StartCoroutine(TriggerSlide(targetPos));
+
+            GetComponent<Character>().OnSlide(slidePowerCost);
+
+        }
+
+    }
+
+    private IEnumerator TriggerSlide(Vector3 target)
+    {
+        do
+        {
+            yield return null;
+            //掉落悬崖
+            if(physicsCheck.touchLeftWall && transform.localScale.x < 0f || physicsCheck.touchRightWall && transform.localScale.x > 0f)
+            {
+                break;
+            }
+            if(physicsCheck.touchLeftWall || physicsCheck.touchRightWall )
+            {
+                isSlide = false;
+                break;
+            }
+            
+            rb.MovePosition(new Vector2(transform.position.x + transform.localScale.x * slideSpeed, transform.position.y));
+        }while(Mathf.Abs(target.x - transform.position.x) > 0.1f);
+        
+        isSlide = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
 
     private void PlayerAttack(InputAction.CallbackContext obj)
     {
@@ -170,6 +240,21 @@ public class PlayerController : MonoBehaviour
     private void CheckState()
     {
         coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
+        if (physicsCheck.onWall)
+        {
+            if (!isMyCode)
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 2);
+            else
+                rb.velocity = new Vector2(rb.velocity.x, -1);
+        }
+        else
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }
+        if (wallJump && rb.velocity.y < 0f)
+        {
+            wallJump = false;
+        }
     }
 
 }
