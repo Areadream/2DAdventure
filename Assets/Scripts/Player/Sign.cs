@@ -13,6 +13,8 @@ public class Sign : MonoBehaviour
     private bool canPress;
     public Transform playerTrans;
     private PlayerInputControl playerInput;
+    private IInteractable targetItem;
+
 
 
     private void Awake()
@@ -25,8 +27,29 @@ public class Sign : MonoBehaviour
     private void OnEnable()
     {
         InputSystem.onActionChange += OnActionChnage;
+        playerInput.Gameplay.Confirm.started += OnConfirm;
     }
 
+        private void Update()
+    {
+        signSprite.GetComponent<SpriteRenderer>().enabled = canPress;
+        signSprite.transform.localScale = playerTrans.localScale;
+    }
+
+    private void OnConfirm(InputAction.CallbackContext context)
+    {
+        if(canPress)
+        {
+            targetItem.TriggerAction();
+            GetComponent<AudioDefination>()?.PlayAudioClip();
+        }
+    }
+
+    /// <summary>
+    /// 设备输入同时切换动画
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="actionChange"></param>
     private void OnActionChnage(object obj, InputActionChange actionChange)
     {
         if (actionChange == InputActionChange.ActionStarted)
@@ -49,11 +72,7 @@ public class Sign : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        signSprite.GetComponent<SpriteRenderer>().enabled = canPress;
-        signSprite.transform.localScale = playerTrans.localScale;
-    }
+
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -61,6 +80,7 @@ public class Sign : MonoBehaviour
         if (other.CompareTag("Interactable"))
         {
             canPress = true;
+            targetItem = other.GetComponent<IInteractable>();
         }
     }
 

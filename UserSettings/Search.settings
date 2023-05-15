@@ -8,7 +8,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.310DEAF1" = "debugger"
+	"last_search.310DEAF1" = "defin"
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = "all"
 }
@@ -57,6 +57,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"de"
 ]
 searchItemFavorites = [
 ]

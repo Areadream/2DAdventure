@@ -160,12 +160,14 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
             isSlide=false;
             StopAllCoroutines();
+            GetComponent<AudioDefination>()?.PlayAudioClip();
         }
         else if (physicsCheck.onWall)
         //else if (physicsCheck.touchLeftWall || physicsCheck.touchRightWall)
         {
             rb.AddForce(new Vector2(-inputDirection.x, 2f) * wallJumpForce, ForceMode2D.Impulse);
             wallJump = true;
+            GetComponent<AudioDefination>()?.PlayAudioClip();
         }
 
     }

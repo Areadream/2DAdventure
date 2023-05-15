@@ -5,11 +5,14 @@ using UnityEngine;
 public class AudioDefination : MonoBehaviour
 {
     public PlayAudioEventSO playAudioEvent;
-    public AudioClip audioClip; 
+    public AudioClip audioClip;
     public bool playOnEnable;
+    // public bool isBGM;
 
-    private void OnEnable() {
-        if(playOnEnable)
+
+    private void OnEnable()
+    {
+        if (playOnEnable)
             PlayAudioClip();
     }
 
