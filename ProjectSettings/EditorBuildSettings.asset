@@ -4,8 +4,6 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Cave.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  m_configObjects: {}
+  m_Scenes: []
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: b65c3e44aaacda04f928aeeeee9ac205, type: 2}
