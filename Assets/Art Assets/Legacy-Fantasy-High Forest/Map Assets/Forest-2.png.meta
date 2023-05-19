@@ -3680,7 +3680,7 @@ TextureImporter:
       name: Forest-2_170
       rect:
         serializedVersion: 2
-        x: 96
+        x: 91
         y: 16
         width: 16
         height: 16
@@ -3701,7 +3701,7 @@ TextureImporter:
       name: Forest-2_171
       rect:
         serializedVersion: 2
-        x: 112
+        x: 107
         y: 16
         width: 16
         height: 16
@@ -3932,7 +3932,7 @@ TextureImporter:
       name: Forest-2_182
       rect:
         serializedVersion: 2
-        x: 96
+        x: 91
         y: 0
         width: 16
         height: 16
@@ -3953,7 +3953,7 @@ TextureImporter:
       name: Forest-2_183
       rect:
         serializedVersion: 2
-        x: 112
+        x: 107
         y: 0
         width: 16
         height: 16

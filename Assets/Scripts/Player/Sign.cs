@@ -29,8 +29,12 @@ public class Sign : MonoBehaviour
         InputSystem.onActionChange += OnActionChnage;
         playerInput.Gameplay.Confirm.started += OnConfirm;
     }
+    private void OnDisable()
+    {
+        canPress = false;
+    }
 
-        private void Update()
+    private void Update()
     {
         signSprite.GetComponent<SpriteRenderer>().enabled = canPress;
         signSprite.transform.localScale = playerTrans.localScale;
@@ -38,7 +42,7 @@ public class Sign : MonoBehaviour
 
     private void OnConfirm(InputAction.CallbackContext context)
     {
-        if(canPress)
+        if (canPress)
         {
             targetItem.TriggerAction();
             GetComponent<AudioDefination>()?.PlayAudioClip();
@@ -56,7 +60,7 @@ public class Sign : MonoBehaviour
         {
             // Debug.Log(((InputAction)obj).activeControl.device);
             var d = ((InputAction)obj).activeControl.device;
-            switch(d.device)
+            switch (d.device)
             {
                 case Keyboard:
                     anim.Play("keyboard");

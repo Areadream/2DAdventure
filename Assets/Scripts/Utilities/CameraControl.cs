@@ -6,23 +6,37 @@ using System;
 
 public class CameraControl : MonoBehaviour
 {
+    [Header("事件监听")]
+    public VoidEventSO afterSceneLoadedEvent;
     public CinemachineImpulseSource impulseSource;
     private CinemachineConfiner2D confiner2D;
     public VoidEventSO cameraShakeEvent;
-    private void Awake() {
+    private void Awake()
+    {
         confiner2D = GetComponent<CinemachineConfiner2D>();
     }
 
-    private void Start() {
-        GetNewCameraBounds();
-    }
+    // TODO: 场景切换后更改
+    // private void Start()
+    // {
+    //     GetNewCameraBounds();
+    // }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         cameraShakeEvent.OnEventRaised += OnCameraShakeEvent;
+        afterSceneLoadedEvent.OnEventRaised += OnAfterEventLoadedEvent;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         cameraShakeEvent.OnEventRaised -= OnCameraShakeEvent;
+        afterSceneLoadedEvent.OnEventRaised += OnAfterEventLoadedEvent;
+    }
+
+    private void OnAfterEventLoadedEvent()
+    {
+        GetNewCameraBounds();
     }
 
     private void OnCameraShakeEvent()
@@ -33,7 +47,7 @@ public class CameraControl : MonoBehaviour
     private void GetNewCameraBounds()
     {
         var obj = GameObject.FindGameObjectWithTag("Bounds");
-        if(obj == null)
+        if (obj == null)
             return;
         confiner2D.m_BoundingShape2D = obj.GetComponent<Collider2D>();
         confiner2D.InvalidateCache();

@@ -7,6 +7,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("监听事件")]
+    public SceneLoadEventSO loadEvent;
+    public VoidEventSO afterSceneLoadedEvent;
+
     [Header("组件")]
     public PlayerInputControl inputControl;
     public Vector2 inputDirection;
@@ -54,14 +58,14 @@ public class PlayerController : MonoBehaviour
         playAnimation = GetComponent<PlayerAnimation>();
         character = GetComponent<Character>();
 
-        originalOffset = coll.offset; 
+        originalOffset = coll.offset;
         originalSize = coll.size;
 
         inputControl.Gameplay.Jump.started += Jump;
 
         #region 强制走路
         runSpeed = speed;
-        inputControl.Gameplay.MoveButton.performed +=  ctx =>
+        inputControl.Gameplay.MoveButton.performed += ctx =>
         {
             if (physicsCheck.isGround)
                 speed = walkSpeed;
@@ -83,12 +87,17 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputControl.Enable();
+        loadEvent.LoadRequestEvent += OnLoadEvent;
+        afterSceneLoadedEvent.OnEventRaised += OnAfterLoadedEvent;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
+        loadEvent.LoadRequestEvent -= OnLoadEvent;
+        afterSceneLoadedEvent.OnEventRaised -= OnAfterLoadedEvent;
     }
+
 
     private void Update()
     {
@@ -99,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(!isHurt && !isAttack)
+        if (!isHurt && !isAttack)
             Move();
     }
 
@@ -108,13 +117,23 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(other.name);
 
     }
+    private void OnLoadEvent(GameSceneSO arg0, Vector3 arg1, bool arg2)
+    {
+        inputControl.Gameplay.Disable();
+    }
+
+    private void OnAfterLoadedEvent()
+    {
+        inputControl.Gameplay.Enable();
+    }
+
 
     public void Move()
     {
         //人物移动
-        if(isSlide)
+        if (isSlide)
             return;
-        if (!isCrouch && !wallJump )
+        if (!isCrouch && !wallJump)
             rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
 
         //人物翻转
@@ -122,10 +141,10 @@ public class PlayerController : MonoBehaviour
         int faceDir = (int)transform.localScale.x;
         if (inputDirection.x > 0)
             faceDir = 1;
-        if (inputDirection.x < 0) 
+        if (inputDirection.x < 0)
             faceDir = -1;
 
-        
+
         transform.localScale = new Vector3(faceDir, 1, 1);
 
         //方法2 改变SpriteRenderer.flipX
@@ -158,7 +177,7 @@ public class PlayerController : MonoBehaviour
         if (physicsCheck.isGround)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-            isSlide=false;
+            isSlide = false;
             StopAllCoroutines();
             GetComponent<AudioDefination>()?.PlayAudioClip();
         }
@@ -174,13 +193,13 @@ public class PlayerController : MonoBehaviour
 
     private void Slide(InputAction.CallbackContext context)
     {
-        if(!isSlide && physicsCheck.isGround && character.currentPower >= slidePowerCost)
+        if (!isSlide && physicsCheck.isGround && character.currentPower >= slidePowerCost)
         {
             isSlide = true;
-            
-            
+
+
             var targetPos = new Vector3(transform.position.x + slideDistance * transform.localScale.x, transform.position.y);
-            
+
             gameObject.layer = LayerMask.NameToLayer("Enemy");
             StartCoroutine(TriggerSlide(targetPos));
 
@@ -196,19 +215,24 @@ public class PlayerController : MonoBehaviour
         {
             yield return null;
             //掉落悬崖
-            if(physicsCheck.touchLeftWall && transform.localScale.x < 0f || physicsCheck.touchRightWall && transform.localScale.x > 0f)
+            if (!physicsCheck.isGround)
             {
                 break;
             }
-            if(physicsCheck.touchLeftWall || physicsCheck.touchRightWall )
+
+            if (physicsCheck.touchLeftWall && transform.localScale.x < 0f || physicsCheck.touchRightWall && transform.localScale.x > 0f)
+            {
+                break;
+            }
+            if (physicsCheck.touchLeftWall || physicsCheck.touchRightWall)
             {
                 isSlide = false;
                 break;
             }
-            
+
             rb.MovePosition(new Vector2(transform.position.x + transform.localScale.x * slideSpeed, transform.position.y));
-        }while(Mathf.Abs(target.x - transform.position.x) > 0.1f);
-        
+        } while (Mathf.Abs(target.x - transform.position.x) > 0.1f);
+
         isSlide = false;
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
@@ -230,7 +254,7 @@ public class PlayerController : MonoBehaviour
         Vector2 dir =
             new Vector2((transform.position.x - attacker.transform.position.x), 0).normalized;
         rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
-    
+
     }
 
     public void PlayerDead()
