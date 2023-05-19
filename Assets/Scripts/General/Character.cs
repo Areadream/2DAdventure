@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class Character : MonoBehaviour
 {
+    [Header("事件监听")]
+    public VoidEventSO newGameEvent;
     [Header("基本属性")]
     public float maxHealth;
     public float currentHealth;
@@ -25,13 +27,26 @@ public class Character : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void NewGame()
     {
         currentHealth = maxHealth;
-        OnHealthChange?.Invoke(this);
+        OnHealthChange?.Invoke(this);//默认血条UI不满，回满血条UI
         currentPower = maxPower;
     }
+    private void Start()
+    {
+        currentHealth = maxHealth;
+    }
 
+    private void OnEnable()
+    {
+        newGameEvent.OnEventRaised += NewGame;
+    }
+
+    private void OnDisable()
+    {
+        newGameEvent.OnEventRaised -= NewGame;
+    }
     // Update is called once per frame
     void Update()
     {

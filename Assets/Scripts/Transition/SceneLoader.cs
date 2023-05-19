@@ -10,22 +10,31 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public Transform playerTrans;
+    public Vector3 firstPosition;
+    public Vector3 menuPosition;
+
     [Header("广播")]
     public VoidEventSO afterSceneLoadedEvent;
     public FadeEventSO fadeEvent;
+    public SceneLoadEventSO unloadedSceneEvent;
     [Header("事件监听")]
     public SceneLoadEventSO loadEventSO;
+    public VoidEventSO newGameEvent;
 
-    public GameSceneSO firstLoadScene;
-    [SerializeField] private GameSceneSO currentLoadScene;//获得当前场景，用以卸载
 
     public float fadeDuration;
-    public Transform playerTrans;
-    public Vector3 firstPosition;
 
+
+    [Header("场景")]
+    public GameSceneSO firstLoadScene;
+    public GameSceneSO menuScene;
+
+    [SerializeField] private GameSceneSO currentLoadScene;//获得当前场景，用以卸载
 
     private GameSceneSO sceneToLoad;
     private Vector3 positionToGo;
+
     private bool fadeScreen;
     private bool isLoading;
     private void Awake()
@@ -36,24 +45,27 @@ public class SceneLoader : MonoBehaviour
     }
     private void Start()
     {
-        NewGame();
+        loadEventSO.RaiseLoadRequestEvent(menuScene, menuPosition, true);
+        // NewGame();
     }
 
     private void OnEnable()
     {
         loadEventSO.LoadRequestEvent += OnLoadRequestEvent;
+        newGameEvent.OnEventRaised += NewGame;
     }
 
     private void OnDisable()
     {
         loadEventSO.LoadRequestEvent -= OnLoadRequestEvent;
+        newGameEvent.OnEventRaised -= NewGame;
     }
 
     private void NewGame()
     {
         sceneToLoad = firstLoadScene;
         // OnLoadRequestEvent(sceneToLoad, firstPosition, true);
-        loadEventSO.RaiseLoadRequestEvent(sceneToLoad,firstPosition,true);
+        loadEventSO.RaiseLoadRequestEvent(sceneToLoad, firstPosition, true);
     }
 
     private void OnLoadRequestEvent(GameSceneSO locationToLoad, Vector3 posToGo, bool fadeScreen)
@@ -85,6 +97,8 @@ public class SceneLoader : MonoBehaviour
         }
 
         yield return new WaitForSeconds(fadeDuration);
+
+        unloadedSceneEvent.RaiseLoadRequestEvent(sceneToLoad,positionToGo,true);
 
         yield return currentLoadScene.sceneReference.UnLoadScene();
 
