@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, ISaveable
 {
     [Header("事件监听")]
     public VoidEventSO newGameEvent;
@@ -41,11 +41,15 @@ public class Character : MonoBehaviour
     private void OnEnable()
     {
         newGameEvent.OnEventRaised += NewGame;
+        ISaveable saveable = this;
+        saveable.RegisterSaveData();
     }
 
     private void OnDisable()
     {
         newGameEvent.OnEventRaised -= NewGame;
+        ISaveable saveable = this;
+        saveable.UnRegisterSaveData();
     }
     // Update is called once per frame
     void Update()
@@ -69,10 +73,13 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag("Water"))
         {
-            //死亡、更新血量
-            currentHealth = 0;
-            OnHealthChange?.Invoke(this);
-            OnDie?.Invoke();
+            if (currentHealth > 0)
+            {
+                //死亡、更新血量
+                currentHealth = 0;
+                OnHealthChange?.Invoke(this);
+                OnDie?.Invoke();
+            }
         }
 
     }
@@ -110,4 +117,38 @@ public class Character : MonoBehaviour
         invulnerable = true;
         invulnerableCount = invulnerableDuration;
     }
+
+    public DataDefinition GetDataID()
+    {
+        return GetComponent<DataDefinition>();
+    }
+    public void GetSaveData(Data data)
+    {
+        if (data.characterPosDict.ContainsKey(GetDataID().ID))
+        {
+            data.characterPosDict[GetDataID().ID] = transform.position;
+            data.floatSaveData[GetDataID().ID + "health"] = this.currentHealth;
+            data.floatSaveData[GetDataID().ID + "power"] = this.currentPower;
+        }
+        else
+        {
+            data.characterPosDict.Add(GetDataID().ID, transform.position);
+            data.floatSaveData.Add(GetDataID().ID + "health", this.currentHealth);
+            data.floatSaveData.Add(GetDataID().ID + "power", this.currentPower);
+        }
+    }
+
+    public void LoadData(Data data)
+    {
+        if (data.characterPosDict.ContainsKey(GetDataID().ID))
+        {
+            transform.position = data.characterPosDict[GetDataID().ID];
+            this.currentHealth = data.floatSaveData[GetDataID().ID + "health"];
+            this.currentPower = data.floatSaveData[GetDataID().ID + "power"];
+
+            //通知UI更新
+            OnHealthChange?.Invoke(this);
+        }
+    }
+
 }

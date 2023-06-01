@@ -8,8 +8,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("监听事件")]
-    public SceneLoadEventSO loadEvent;
+    public SceneLoadEventSO sceneLoadEvent;
     public VoidEventSO afterSceneLoadedEvent;
+    public VoidEventSO loadDataEvent;
+    public VoidEventSO backToMenuEvent;
 
     [Header("组件")]
     public PlayerInputControl inputControl;
@@ -80,23 +82,30 @@ public class PlayerController : MonoBehaviour
         inputControl.Gameplay.Attack.started += PlayerAttack;
         //滑铲
         inputControl.Gameplay.Slide.started += Slide;
+        inputControl.Enable();
+
     }
 
 
 
     private void OnEnable()
     {
-        inputControl.Enable();
-        loadEvent.LoadRequestEvent += OnLoadEvent;
+        sceneLoadEvent.LoadRequestEvent += OnLoadEvent;
         afterSceneLoadedEvent.OnEventRaised += OnAfterLoadedEvent;
+        loadDataEvent.OnEventRaised += OnLoadDataEvent;
+        backToMenuEvent.OnEventRaised += OnLoadDataEvent;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
-        loadEvent.LoadRequestEvent -= OnLoadEvent;
+        sceneLoadEvent.LoadRequestEvent -= OnLoadEvent;
         afterSceneLoadedEvent.OnEventRaised -= OnAfterLoadedEvent;
+        loadDataEvent.OnEventRaised -= OnLoadDataEvent;
+        backToMenuEvent.OnEventRaised -= OnLoadDataEvent;
+
     }
+
 
 
     private void Update()
@@ -126,7 +135,10 @@ public class PlayerController : MonoBehaviour
     {
         inputControl.Gameplay.Enable();
     }
-
+    private void OnLoadDataEvent()
+    {
+        isDead = false;
+    }
 
     public void Move()
     {

@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8847689892426886928}
   - component: {fileID: 3704706298792498359}
   - component: {fileID: 9011999845322730992}
+  - component: {fileID: -1741372653048526548}
   m_Layer: 8
   m_Name: Boar
   m_TagString: Untagged
@@ -238,6 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9253912ef099b4dbdcaaa4bc2d1788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newGameEvent: {fileID: 0}
   maxHealth: 30
   currentHealth: 0
   maxPower: 0
@@ -374,3 +376,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-1741372653048526548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115294795007677987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d054687c8403524b99c6ca8f1551980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  persistentType: 0
+  ID: f2866069-55e7-43c6-b330-4efb4b72af12
