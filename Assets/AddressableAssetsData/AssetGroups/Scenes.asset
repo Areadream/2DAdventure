@@ -27,13 +27,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 65e3774fcc8e1d54da315fdc5906bde7
-    m_Address: Persistent
+  - m_GUID: e71ec56429d98d941a23c8f4dea22fd0
+    m_Address: Menu
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e71ec56429d98d941a23c8f4dea22fd0
-    m_Address: Menu
+  - m_GUID: 65e3774fcc8e1d54da315fdc5906bde7
+    m_Address: Persistent
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
